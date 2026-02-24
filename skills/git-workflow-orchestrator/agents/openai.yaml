@@ -1,0 +1,3 @@
+display_name: Git Workflow Orchestrator
+short_description: Coordinate checks, commits, and PR workflow through specialized Git skills.
+default_prompt: Manage this task through a full Git workflow from checks to PR.

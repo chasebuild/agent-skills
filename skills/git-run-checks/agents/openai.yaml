@@ -1,0 +1,3 @@
+display_name: Git Run Checks
+short_description: Run pre-commit and pre-PR checks with toolchain-aware detection.
+default_prompt: Run all required checks for this repository before I commit.

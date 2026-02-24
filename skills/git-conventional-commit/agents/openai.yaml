@@ -1,0 +1,3 @@
+display_name: Git Conventional Commit
+short_description: Generate precise Conventional Commit messages for staged diffs.
+default_prompt: Write a conventional commit message for my currently staged changes.

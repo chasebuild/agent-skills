@@ -1,0 +1,3 @@
+display_name: Git Atomic Commit
+short_description: Split diffs into dependency-safe, review-friendly atomic commits.
+default_prompt: Split my current changes into atomic commits and propose commit order.

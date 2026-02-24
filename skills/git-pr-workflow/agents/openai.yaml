@@ -1,0 +1,3 @@
+display_name: Git PR Workflow
+short_description: Prepare review-ready pull requests with verified checks and clear context.
+default_prompt: Prepare this branch for a pull request and give me a PR description draft.
