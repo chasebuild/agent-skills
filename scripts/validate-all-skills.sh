@@ -1,59 +1,78 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ ! -d skills ]; then
-  echo "skills/ directory not found" >&2
+group_roots=()
+
+for candidate in */; do
+  [ -d "$candidate" ] || continue
+  candidate="${candidate%/}"
+  if [ -d "$candidate/skills" ]; then
+    group_roots+=("$candidate")
+  fi
+done
+
+if [ "${#group_roots[@]}" -eq 0 ]; then
+  echo "No skill group directories found" >&2
   exit 1
 fi
 
 status=0
 
-for skill_dir in skills/*; do
-  [ -d "$skill_dir" ] || continue
-  skill_file="$skill_dir/SKILL.md"
+for group_dir in "${group_roots[@]}"; do
+  [ -d "$group_dir" ] || continue
 
-  if [ ! -f "$skill_file" ]; then
-    echo "ERROR: missing SKILL.md in $skill_dir" >&2
+  if [ ! -d "$group_dir/skills" ]; then
+    echo "ERROR: missing skills/ directory in $group_dir" >&2
     status=1
     continue
   fi
 
-  if ! head -n 1 "$skill_file" | rg -q '^---$'; then
-    echo "ERROR: frontmatter start separator missing in $skill_file" >&2
-    status=1
-    continue
-  fi
+  for skill_dir in "$group_dir"/skills/*; do
+    [ -d "$skill_dir" ] || continue
+    skill_file="$skill_dir/SKILL.md"
 
-  frontmatter="$(
-    awk '
-      NR == 1 { next }
-      /^---$/ { exit 0 }
-      { print }
-    ' "$skill_file"
-  )"
+    if [ ! -f "$skill_file" ]; then
+      echo "ERROR: missing SKILL.md in $skill_dir" >&2
+      status=1
+      continue
+    fi
 
-  if [ -z "$frontmatter" ]; then
-    echo "ERROR: empty frontmatter in $skill_file" >&2
-    status=1
-    continue
-  fi
+    if ! head -n 1 "$skill_file" | rg -q '^---$'; then
+      echo "ERROR: frontmatter start separator missing in $skill_file" >&2
+      status=1
+      continue
+    fi
 
-  if ! printf '%s\n' "$frontmatter" | rg -q '^name:'; then
-    echo "ERROR: name field missing in $skill_file" >&2
-    status=1
-  fi
+    frontmatter="$(
+      awk '
+        NR == 1 { next }
+        /^---$/ { exit 0 }
+        { print }
+      ' "$skill_file"
+    )"
 
-  if ! printf '%s\n' "$frontmatter" | rg -q '^description:'; then
-    echo "WARN: description field missing in $skill_file (allowed for internal skills)" >&2
-  fi
+    if [ -z "$frontmatter" ]; then
+      echo "ERROR: empty frontmatter in $skill_file" >&2
+      status=1
+      continue
+    fi
 
+    if ! printf '%s\n' "$frontmatter" | rg -q '^name:'; then
+      echo "ERROR: name field missing in $skill_file" >&2
+      status=1
+    fi
+
+    if ! printf '%s\n' "$frontmatter" | rg -q '^description:'; then
+      echo "WARN: description field missing in $skill_file (allowed for internal skills)" >&2
+    fi
+  done
 done
 
 for helper in \
-  skills/git-run-checks/scripts/run-project-checks.sh \
-  skills/git-atomic-commit/scripts/suggest-slices.sh \
-  skills/git-conventional-commit/scripts/compose-conventional-commit.sh \
-  skills/git-pr-workflow/scripts/pr-checklist.sh \
+  git/skills/git-run-checks/scripts/run-project-checks.sh \
+  git/skills/git-atomic-commit/scripts/suggest-slices.sh \
+  git/skills/git-conventional-commit/scripts/compose-conventional-commit.sh \
+  git/skills/git-pr-workflow/scripts/pr-checklist.sh \
   scripts/sync-rust-skills.sh \
   scripts/validate-all-skills.sh; do
   if [ ! -x "$helper" ]; then

@@ -2,6 +2,7 @@
 set -euo pipefail
 
 upstream_root="${1:-/tmp/rust-skills}"
+target_root="rust"
 
 if [ ! -d "$upstream_root/skills" ]; then
   echo "Expected upstream skills at: $upstream_root/skills" >&2
@@ -9,18 +10,18 @@ if [ ! -d "$upstream_root/skills" ]; then
   exit 1
 fi
 
-mkdir -p skills agents
+mkdir -p "$target_root/skills" "$target_root/agents"
 
 for skill_dir in "$upstream_root"/skills/*; do
   [ -d "$skill_dir" ] || continue
   skill_name="$(basename "$skill_dir")"
   echo "Syncing skill: $skill_name"
-  rm -rf "skills/$skill_name"
-  cp -R "$skill_dir" "skills/$skill_name"
+  rm -rf "$target_root/skills/$skill_name"
+  cp -R "$skill_dir" "$target_root/skills/$skill_name"
 done
 
-echo "Syncing agents/"
-rm -rf agents
-cp -R "$upstream_root/agents" agents
+echo "Syncing Rust agents/"
+rm -rf "$target_root/agents"
+cp -R "$upstream_root/agents" "$target_root/agents"
 
 echo "Done. Run ./scripts/validate-all-skills.sh next."
