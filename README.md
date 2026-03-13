@@ -28,6 +28,12 @@ Install context-engineering skills:
 npx skills add chasebuild/agent-skills/context-engineering
 ```
 
+Install web3 skills:
+
+```bash
+npx skills add chasebuild/agent-skills/web3
+```
+
 Install from a local clone:
 
 ```bash
@@ -35,6 +41,7 @@ npx skills add ./context-engineering
 npx skills add ./git
 npx skills add ./react
 npx skills add ./rust
+npx skills add ./web3
 ```
 
 Each top-level group is an installable root with its own `skills/` directory. The Rust group also includes its required `agents/` directory.
@@ -79,6 +86,18 @@ Each top-level group is an installable root with its own `skills/` directory. Th
 - Rust skills imported from `actionbook/rust-skills`
 - Shared agent reference files required by those Rust skills
 
+`web3`
+
+- Mirrored Uniswap-focused skills from `Uniswap/uniswap-ai`
+- `configurator`
+- `deployer`
+- `liquidity-planner`
+- `swap-integration`
+- `swap-planner`
+- `v4-security-foundations`
+- `viem-integration`
+- Shared support files under `web3/agents/` and `web3/references/`
+
 ## Guarantees
 
 - Commit flow enforces checks-before-commit guidance.
@@ -104,4 +123,5 @@ Validate every skill group:
 - Context engineering skills upstream: https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering
 - Rust skills upstream: https://github.com/actionbook/rust-skills
 - React skills upstream: https://github.com/vercel-labs/agent-skills
+- Web3 skills upstream: https://github.com/Uniswap/uniswap-ai
 - Boris thread reference: https://x.com/bcherny/status/2007179832300581177
