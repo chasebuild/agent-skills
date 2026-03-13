@@ -7,25 +7,25 @@ Reusable skills repository for `npx skills add`.
 Install Git skills:
 
 ```bash
-npx skills add vercel-labs/agent-skills/git
+npx skills add chasebuild/agent-skills/git
 ```
 
 Install Rust skills:
 
 ```bash
-npx skills add vercel-labs/agent-skills/rust
+npx skills add chasebuild/agent-skills/rust
 ```
 
 Install React skills:
 
 ```bash
-npx skills add vercel-labs/agent-skills/react
+npx skills add chasebuild/agent-skills/react
 ```
 
 Install context-engineering skills:
 
 ```bash
-npx skills add vercel-labs/agent-skills/context-engineering
+npx skills add chasebuild/agent-skills/context-engineering
 ```
 
 Install from a local clone:
